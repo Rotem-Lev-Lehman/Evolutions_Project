@@ -1,4 +1,4 @@
-package com.company.TicTacToeEvents;
+package com.company.BPStuff.TicTacToeEvents;
 
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 

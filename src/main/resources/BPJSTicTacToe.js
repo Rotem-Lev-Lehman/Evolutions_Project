@@ -1,6 +1,6 @@
 /* global bp, bp.sync, TicTacToeGameMain, Packages */
 
-importPackage(com.company.TicTacToeEvents);
+importPackage(com.company.BPStuff.TicTacToeEvents);
 
 bp.log.info('Tic-Tac-Toe - Let the game begin!');
 
@@ -61,7 +61,8 @@ bp.registerBThread("EndOfGame", function() {
 			X(2, 0), X(2, 1), X(2, 2),
 			O(0, 0), O(0, 1), O(0, 2),
 			O(1, 0), O(1, 1), O(1, 2),
-			O(2, 0), O(2, 1), O(2, 2) ] });
+			O(2, 0), O(2, 1), O(2, 2),
+			StaticEvents.OWin, StaticEvents.XWin, StaticEvents.draw] });
 });
 
 var move = bp.EventSet("Move events", function(e) {

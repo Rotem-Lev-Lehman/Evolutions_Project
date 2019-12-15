@@ -1,4 +1,4 @@
-package com.company.TicTacToeEvents;
+package com.company.BPStuff.TicTacToeEvents;
 
 /**
  * An event that is executed when player O makes a move.
