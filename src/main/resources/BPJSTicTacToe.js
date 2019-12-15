@@ -4,6 +4,16 @@ importPackage(com.company.TicTacToeEvents);
 
 bp.log.info('Tic-Tac-Toe - Let the game begin!');
 
+//weights array:
+//optimal weights = [50, 40, 30, 30, 30, 30, 30, 35, 20, 10];
+//weights = [50, 40, 30, 30, 30, 30, 30, 35, 20, 10];
+/*
+for(i = 0; i < weights.length; i++){
+	bp.log.info(weights[i]);
+}
+bp.log.info(weights);
+*/
+
 // GameRules:
 
 // This BThreads are on each square of the grid
@@ -116,7 +126,7 @@ function addLinePermutationBthreads(l, p) {
 
 			bp.sync({ waitFor:[ O(l[p[1]].x, l[p[1]].y) ] });
 
-			bp.sync({ request:[ O(l[p[2]].x, l[p[2]].y) ] }, 50);
+			bp.sync({ request:[ O(l[p[2]].x, l[p[2]].y) ] }, weights[0]);
 		}
 	});
 
@@ -127,7 +137,7 @@ function addLinePermutationBthreads(l, p) {
 
 			bp.sync({ waitFor:[ X(l[p[1]].x, l[p[1]].y) ] });
 
-			bp.sync({ request:[ O(l[p[2]].x, l[p[2]].y) ] }, 40);
+			bp.sync({ request:[ O(l[p[2]].x, l[p[2]].y) ] }, weights[1]);
 		}
 	});
 }
@@ -160,7 +170,7 @@ function addFork22PermutationBthreads(f, p) {
 
 			bp.sync({ waitFor:[ X(f[p[1]].x, f[p[1]].y) ] });
 
-			bp.sync({ request:[ O(2, 2), O(0,2), O(2,0) ] }, 30);
+			bp.sync({ request:[ O(2, 2), O(0,2), O(2,0) ] }, weights[2]);
 //			bp.sync({ block:[ O(0,0), O(0,1), O(1,0) ] },30); // Problematic - stays all the time
 		}
 	});
@@ -174,7 +184,7 @@ function addFork02PermutationBthreads(f, p) {
 
 			bp.sync({ waitFor:[ X(f[p[1]].x, f[p[1]].y) ] });
 
-			bp.sync({ request:[ O(0, 2), O(0,0), O(2,2) ] }, 30);
+			bp.sync({ request:[ O(0, 2), O(0,0), O(2,2) ] }, weights[3]);
 		}
 	});
 }
@@ -187,7 +197,7 @@ function addFork20PermutationBthreads(f, p) {
 
 			bp.sync({ waitFor:[ X(f[p[1]].x, f[p[1]].y) ] });
 
-			bp.sync({ request:[ O(2, 0), O(0,0), O(2,2) ] }, 30);
+			bp.sync({ request:[ O(2, 0), O(0,0), O(2,2) ] }, weights[4]);
 		}
 	});
 }
@@ -200,7 +210,7 @@ function addFork00PermutationBthreads(f, p) {
 
 			bp.sync({ waitFor:[ X(f[p[1]].x, f[p[1]].y) ] });
 
-			bp.sync({ request:[ O(0, 0), O(0,2), O(2,0) ] }, 30);
+			bp.sync({ request:[ O(0, 0), O(0,2), O(2,0) ] }, weights[5]);
 		}
 	});
 }
@@ -213,7 +223,7 @@ function addForkdiagPermutationBthreads(f, p) {
 
 			bp.sync({ waitFor:[ X(f[p[1]].x, f[p[1]].y) ] });
 
-			bp.sync({ request:[ O(0, 1), O(1, 0), O(1, 2), O(2, 1) ] }, 30);
+			bp.sync({ request:[ O(0, 1), O(1, 0), O(1, 2), O(2, 1) ] }, weights[6]);
 		}
 	});
 }
@@ -262,14 +272,14 @@ forksdiag.forEach(function(f) {
 // Preference to put O on the center
 bp.registerBThread("Center", function() {
 	while (true) {
-		bp.sync({ request:[ O(1, 1) ] }, 35);
+		bp.sync({ request:[ O(1, 1) ] }, weights[7]);
 	}
 });
 
 // Preference to put O on the corners
 bp.registerBThread("Corners", function() {
 	while (true) {
-		bp.sync({ request:[ O(0, 0), O(0, 2), O(2, 0), O(2, 2) ] }, 20);
+		bp.sync({ request:[ O(0, 0), O(0, 2), O(2, 0), O(2, 2) ] }, weights[8]);
 
 	}
 });
@@ -277,6 +287,6 @@ bp.registerBThread("Corners", function() {
 // Preference to put O on the sides
 bp.registerBThread("Sides", function() {
 	while (true) {
-		bp.sync({ request:[ O(0, 1), O(1, 0), O(1, 2), O(2, 1) ] }, 10);
+		bp.sync({ request:[ O(0, 1), O(1, 0), O(1, 2), O(2, 1) ] }, weights[9]);
 	}
 });
