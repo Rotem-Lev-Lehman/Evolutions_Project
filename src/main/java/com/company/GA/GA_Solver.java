@@ -2,6 +2,7 @@ package com.company.GA;
 
 import com.company.PlayingProcess.GASimulator;
 import com.company.PlayingProcess.Game;
+import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import io.jenetics.*;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
@@ -9,11 +10,15 @@ import io.jenetics.engine.Limits;
 import io.jenetics.util.Factory;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GA_Solver {
     private static final int SIZE_OF_SOLUTION = 10;
     private static final int POPULATION_SIZE = 100;
     private static final long AMOUNT_OF_GENERATIONS = 100;
+    private static final AtomicInteger INSTANCE_COUNTER = new AtomicInteger();
+private  static ExecutorService executorService = ExecutorServiceMaker.makeWithName("BProgramRunner-" + INSTANCE_COUNTER.incrementAndGet());
 
     public void Solve() {
 
@@ -30,20 +35,21 @@ public class GA_Solver {
                 .limit(Limits.byFixedGeneration(AMOUNT_OF_GENERATIONS))
                 //.peek(MyStatisticsSaver::update)
                 .collect(EvolutionResult.toBestGenotype());
-
-        System.out.println(Arrays.toString(getWeights(result)));
+        executorService.shutdown();
         System.out.println("Fitness = " + eval(result));
+        System.out.println(Arrays.toString(getWeights(result)));
+
     }
 
     private static double eval(Genotype<IntegerGene> gt) {
-        int[] weights = getWeights(gt);
+        Integer[] weights = getWeights(gt);
         //calculate the fitness by running it in the simulator:
-        GASimulator simulator = new GASimulator(weights);
+        GASimulator simulator = new GASimulator(weights, executorService);
         return simulator.getFitness();
     }
 
-    private static int[] getWeights(Genotype<IntegerGene> gt) {
-        int[] weights = new int[SIZE_OF_SOLUTION];
+    private static Integer[] getWeights(Genotype<IntegerGene> gt) {
+        Integer[] weights = new Integer[SIZE_OF_SOLUTION];
         for (int i = 0; i < gt.length(); i++) {
             weights[i] = gt.getChromosome(i).stream().mapToInt(IntegerGene::intValue).toArray()[0];
         }

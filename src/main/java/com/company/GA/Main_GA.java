@@ -10,6 +10,7 @@ import il.ac.bgu.cs.bp.bpjs.model.ResourceBProgram;
 import il.ac.bgu.cs.bp.bpjs.model.eventselection.PrioritizedBSyncEventSelectionStrategy;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class will control the GA solution of the Tic Tac Toe algorithm
@@ -18,13 +19,14 @@ public class Main_GA {
     public static void main(String[] args) {
         GA_Solver solver = new GA_Solver();
         solver.Solve();
+        //previousRun();
     }
 
     public static void previousRun(){
         String aResourceName = "BPJSTicTacToe.js";
         BProgram program = new ResourceBProgram(aResourceName, new PrioritizedBSyncEventSelectionStrategy());
-        //Integer[] weightsArray = new Integer[]{50, 40, 30, 30, 30, 30, 30, 35, 20, 10};
-        Integer[] weightsArray = new Integer[]{1,1,1,1,1,1,1,1,1,1};
+        Integer[] weightsArray = new Integer[]{50, 40, 30, 30, 30, 30, 30, 35, 20, 10};
+        //Integer[] weightsArray = new Integer[]{1,1,1,1,1,1,1,1,1,1};
 
         program.putInGlobalScope("weights", weightsArray);
         BProgramRunner runner = new BProgramRunner(program);
@@ -37,16 +39,17 @@ public class Main_GA {
         initBoard(board);
         for (BEvent move : eventsSelected) {
             System.out.println(move.name);
-            if(move instanceof Move){
+            if(!isStaticEvent(move) && isMove(move)){
                 Spot spot;
-                if(move instanceof X){
+                if(isX(move)){
                     spot = Spot.X;
                 }
                 else{
                     spot = Spot.O;
                 }
-                int col = ((Move)move).col;
-                int row = ((Move)move).row;
+                Map<String, Double> data = (Map<String, Double>)move.maybeData;
+                int col = (int)(double)data.get("col");
+                int row = (int)(double)data.get("row");
                 board[row][col] = spot;
                 //PrintBoard(board);
             }
@@ -54,6 +57,38 @@ public class Main_GA {
         }
         PrintBoard(board);
         System.out.println("Done moves");
+    }
+
+    private static boolean isStaticEvent(BEvent event){
+        return isXWin(event) || isOWin(event) || isDraw(event) || isGameOver(event);
+    }
+
+    private static boolean isGameOver(BEvent event) {
+        return event.name.equals("GameOver");
+    }
+
+    private static boolean isDraw(BEvent event) {
+        return event.name.equals("Draw");
+    }
+
+    private static boolean isOWin(BEvent event) {
+        return event.name.equals("OWin");
+    }
+
+    private static boolean isXWin(BEvent event) {
+        return event.name.equals("XWin");
+    }
+
+    private static boolean isMove(BEvent event){
+        return isX(event) || isO(event);
+    }
+
+    private static boolean isO(BEvent event) {
+        return event.name.contains("O");
+    }
+
+    private static boolean isX(BEvent event) {
+        return event.name.contains("X");
     }
 
     private static void initBoard(Spot[][] board) {

@@ -1,8 +1,8 @@
 /* global bp, bp.sync, TicTacToeGameMain, Packages */
 
-importPackage(com.company.BPStuff.TicTacToeEvents);
+//importPackage(com.company.BPStuff.TicTacToeEvents);
 
-bp.log.info('Tic-Tac-Toe - Let the game begin!');
+//bp.log.info('Tic-Tac-Toe - Let the game begin!');
 
 //weights array:
 //optimal weights = [50, 40, 30, 30, 30, 30, 30, 35, 20, 10];
@@ -13,6 +13,26 @@ for(i = 0; i < weights.length; i++){
 }
 bp.log.info(weights);
 */
+
+//Events:
+//Moves:
+function Move(row, col, type){
+	return bp.Event(type + "(" + row + "," + col + ")", {row:row, col:col});
+}
+
+function X(row, col) {
+	return Move(row, col, "X");
+}
+
+function O(row, col) {
+	return Move(row, col, "O");
+}
+
+//Static events:
+var XWin = bp.Event("XWin");
+var OWin = bp.Event("OWin");
+var draw = bp.Event("Draw");
+var gameOver = bp.Event("GameOver");
 
 // GameRules:
 
@@ -54,7 +74,7 @@ bp.registerBThread("EnforceTurns", function() {
 
 // Represents when the game ends
 bp.registerBThread("EndOfGame", function() {
-	bp.sync({ waitFor:[ StaticEvents.OWin, StaticEvents.XWin, StaticEvents.draw ] });
+	bp.sync({ waitFor:[ OWin, XWin, draw ] });
 
 	bp.sync({ block:[ X(0, 0), X(0, 1), X(0, 2),
 			X(1, 0), X(1, 1), X(1, 2),
@@ -62,11 +82,12 @@ bp.registerBThread("EndOfGame", function() {
 			O(0, 0), O(0, 1), O(0, 2),
 			O(1, 0), O(1, 1), O(1, 2),
 			O(2, 0), O(2, 1), O(2, 2),
-			StaticEvents.OWin, StaticEvents.XWin, StaticEvents.draw] });
+			OWin, XWin, draw] });
 });
 
 var move = bp.EventSet("Move events", function(e) {
-	return e instanceof Move;
+	//return e instanceof Move;
+	return e.name.startsWith("X(") || e.name.startsWith("O(");
 });
 
 // Represents when it is a draw
@@ -87,7 +108,7 @@ bp.registerBThread("DetectDraw", function() {
 	 * for (var i=0; i< 9; i++) { bp.sync({ waitFor:[ move ] }); }
 	 */
 
-	bp.sync({ request:[ StaticEvents.draw ] }, 90);
+	bp.sync({ request:[ draw ] }, 90);
 });
 
 function addLinePermutationBthreads(l, p) {
@@ -101,7 +122,7 @@ function addLinePermutationBthreads(l, p) {
 
 			bp.sync({ waitFor:[ X(l[p[2]].x, l[p[2]].y) ] });
 
-			bp.sync({ request:[ StaticEvents.XWin ] }, 100);
+			bp.sync({ request:[ XWin ] }, 100);
 
 		}
 	});
@@ -115,7 +136,7 @@ function addLinePermutationBthreads(l, p) {
 
 			bp.sync({ waitFor:[ O(l[p[2]].x, l[p[2]].y) ] });
 
-			bp.sync({ request:[ StaticEvents.OWin ] }, 100);
+			bp.sync({ request:[ OWin ] }, 100);
 
 		}
 	});

@@ -6,6 +6,7 @@ import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Game {
     /**
@@ -19,7 +20,7 @@ public class Game {
     /**
      * Keeps the moves that were played in the game
      */
-    private List<Move> moves;
+    private List<BEvent> moves;
     /**
      * The result of this game
      */
@@ -39,18 +40,51 @@ public class Game {
         }
     }
 
-    public void AddMove(Move move){
+    public void AddMove(BEvent move){
         Spot spot;
-        if(move instanceof X){
+        if(isX(move)){
             spot = Spot.X;
         }
         else{
             spot = Spot.O;
         }
-        int row = move.row;
-        int col = move.col;
+        Map<String, Double> data = (Map<String, Double>)move.maybeData;
+        int col = (int)(double)data.get("col");
+        int row = (int)(double)data.get("row");
         board[row][col] = spot;
         moves.add(move);
+    }
+
+    public static boolean isStaticEvent(BEvent event){
+        return isXWin(event) || isOWin(event) || isDraw(event) || isGameOver(event);
+    }
+
+    public static boolean isGameOver(BEvent event) {
+        return event.name.equals("GameOver");
+    }
+
+    public static boolean isDraw(BEvent event) {
+        return event.name.equals("Draw");
+    }
+
+    public static boolean isOWin(BEvent event) {
+        return event.name.equals("OWin");
+    }
+
+    public static boolean isXWin(BEvent event) {
+        return event.name.equals("XWin");
+    }
+
+    public static boolean isMove(BEvent event){
+        return isX(event) || isO(event);
+    }
+
+    public static boolean isO(BEvent event) {
+        return event.name.contains("O");
+    }
+
+    public static boolean isX(BEvent event) {
+        return event.name.contains("X");
     }
 
     @Override
@@ -84,7 +118,7 @@ public class Game {
     }
 
     public void setResult(BEvent event) {
-        if(event instanceof Move) {
+        if(!isStaticEvent(event)) {
             try {
                 throw new Exception("The event given must be a result event");
             } catch (Exception e) {

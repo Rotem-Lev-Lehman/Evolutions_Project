@@ -2,10 +2,13 @@ package com.company.PlayingProcess;
 
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
 
-public class GASimulator extends Simulator {
-    private int[] weights;
+import java.util.concurrent.ExecutorService;
 
-    public GASimulator(int[] weights) {
+public class GASimulator extends Simulator {
+    private Integer[] weights;
+
+    public GASimulator(Integer[] weights, ExecutorService executorService) {
+        super(executorService);
         this.weights = weights;
     }
 
