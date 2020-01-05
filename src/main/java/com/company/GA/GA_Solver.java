@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GA_Solver {
     private static final int SIZE_OF_SOLUTION = 10;
     private static final int POPULATION_SIZE = 10;
-    private static final long AMOUNT_OF_GENERATIONS = 10;
+    private static final long AMOUNT_OF_GENERATIONS = 2;
     private static final AtomicInteger INSTANCE_COUNTER = new AtomicInteger();
     private  static ExecutorService executorService = ExecutorServiceMaker.makeWithName("BProgramRunner-" + INSTANCE_COUNTER.incrementAndGet());
 
@@ -26,7 +26,7 @@ public class GA_Solver {
 
         Engine<IntegerGene, Double> engine = Engine.builder(GA_Solver::eval, gtf)
                 .populationSize(POPULATION_SIZE)
-                .alterers(new SinglePointCrossover<>(0.7), new Mutator<>(0.1))
+                .alterers(new MultiPointCrossover<>(0.7,3), new Mutator<>(0.1))
                 .selector(new TournamentSelector<>())
                 .maximizing()
                 .build();
