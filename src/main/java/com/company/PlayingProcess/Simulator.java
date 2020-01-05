@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
  */
 public abstract class Simulator {
     private static final String aResourceName = "BPJSTicTacToe.js";
-    private static final int NUM_OF_GAMES = 5;
+    private static final int NUM_OF_GAMES = 50;
     private ExecutorService executorService;
 
 

@@ -16,12 +16,17 @@ public class MyStatisticsSaver {
     private static List<EvolutionStatistics<Double, ?>> statistics;
     private static EvolutionStatistics<Double, ?> totalStatistics;
     private static List<Double> median;
+    private static int generationNum;
+    public static int UPDATE_USER_EVERY_GENERATION_NUM = 3;
+    private static int nextTimeToUpdateUser;
     private String filename;
 
     public MyStatisticsSaver(String folder, String name, int experimentNum) {
         statistics = new LinkedList<>();
         totalStatistics = EvolutionStatistics.ofNumber();
         median = new LinkedList<>();
+        generationNum = 0;
+        nextTimeToUpdateUser = UPDATE_USER_EVERY_GENERATION_NUM;
         filename = folder + "/" + name + experimentNum + ".csv";
     }
 
@@ -67,6 +72,11 @@ public class MyStatisticsSaver {
         median.add(medianCalc.get(midIndex));
         statistics.add(curr);
         totalStatistics.accept(result);
+        if(generationNum >= nextTimeToUpdateUser){
+            nextTimeToUpdateUser += UPDATE_USER_EVERY_GENERATION_NUM;
+            System.out.println("Current generation is: " + generationNum);
+        }
+        generationNum++;
     }
 
     private static void WriteToFile(String fileName, String data) {

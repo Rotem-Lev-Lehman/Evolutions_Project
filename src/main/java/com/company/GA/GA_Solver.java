@@ -15,10 +15,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GA_Solver {
     private static final int SIZE_OF_SOLUTION = 10;
-    private static final int POPULATION_SIZE = 100;
-    private static final long AMOUNT_OF_GENERATIONS = 100;
+    private static final int POPULATION_SIZE = 10;
+    private static final long AMOUNT_OF_GENERATIONS = 10;
     private static final AtomicInteger INSTANCE_COUNTER = new AtomicInteger();
-private  static ExecutorService executorService = ExecutorServiceMaker.makeWithName("BProgramRunner-" + INSTANCE_COUNTER.incrementAndGet());
+    private  static ExecutorService executorService = ExecutorServiceMaker.makeWithName("BProgramRunner-" + INSTANCE_COUNTER.incrementAndGet());
 
     public void Solve() {
 
@@ -33,7 +33,7 @@ private  static ExecutorService executorService = ExecutorServiceMaker.makeWithN
 
         Genotype<IntegerGene> result = engine.stream()
                 .limit(Limits.byFixedGeneration(AMOUNT_OF_GENERATIONS))
-                //.peek(MyStatisticsSaver::update)
+                .peek(MyStatisticsSaver::update)
                 .collect(EvolutionResult.toBestGenotype());
         executorService.shutdown();
         System.out.println("Fitness = " + eval(result));

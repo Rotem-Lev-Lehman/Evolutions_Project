@@ -17,9 +17,25 @@ import java.util.Map;
  */
 public class Main_GA {
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
+
+        runGAWithStatistics();
+
+        long finishTime = System.currentTimeMillis();
+        long totalTime = finishTime - startTime;
+        System.out.println();
+        System.out.println("Total time: " + totalTime);
+        //previousRun();
+    }
+
+    public static void runGAWithStatistics(){
+        String folder = "src/main/results/GA";
+        String name = "exp1";
+        int experimentNum = 1;
+        MyStatisticsSaver statisticsSaver = new MyStatisticsSaver(folder, name, experimentNum);
         GA_Solver solver = new GA_Solver();
         solver.Solve();
-        //previousRun();
+        statisticsSaver.Save();
     }
 
     public static void previousRun(){
