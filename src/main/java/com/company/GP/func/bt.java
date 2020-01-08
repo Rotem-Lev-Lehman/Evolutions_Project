@@ -1,5 +1,6 @@
 package com.company.GP.func;
 
+import com.company.GP.TicTacToe;
 import ec.EvolutionState;
 import ec.Problem;
 import ec.gp.ADFStack;
@@ -17,7 +18,9 @@ public class bt extends GPNode {
 
     @Override
     public void eval(EvolutionState evolutionState, int i, GPData gpData, ADFStack adfStack, GPIndividual gpIndividual, Problem problem) {
+        TicTacToe p = (TicTacToe)problem;
+        p.tree.append("bp.registerBThread(\"").append(p.getNextBtName()).append("\",function(){");
         children[0].eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
-
+        p.tree.append("});");
     }
 }

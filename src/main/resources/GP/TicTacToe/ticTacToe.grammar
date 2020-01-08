@@ -1,6 +1,6 @@
 <root> ::= (root <btf> <btf> <btf> <btf> <btf> <btf> <btf> <bt> <bt> <bt>)
 <btf> ::= (btf <while_truef>)
-<while_truef> ::= (while_truef1 <requestf>) | (while_truef2 <wait_forf> <requestf>) | (while_truef3 <wait_forf> <wait_forf> <requestf>) | (while_truef4 <wait_forf> <wait_forf> <wait_forf> <requestf>)
+<while_truef> ::= (while_truef1 <requestf>) | (while_truef2 <wait_forf> <requestf>) | (while_truef3 <wait_forf> <wait_forf> <requestf>)
 <wait_forf> ::=  (wait_forf <eventf>)
 <requestf> ::=  (requestf <of> <priority>)
 <eventf> ::= <xf> | <of>
