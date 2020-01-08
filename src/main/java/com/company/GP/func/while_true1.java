@@ -8,22 +8,19 @@ import ec.gp.GPData;
 import ec.gp.GPIndividual;
 import ec.gp.GPNode;
 
-public class while_truef4 extends GPNode {
+public class while_true1 extends GPNode {
     @Override
     public String toString() {
-        return "while_truef4";
+        return "while_true1";
     }
-    public int expectedChildren() { return 4; }
+    public int expectedChildren() { return 1; }
 
 
     @Override
     public void eval(EvolutionState evolutionState, int i, GPData gpData, ADFStack adfStack, GPIndividual gpIndividual, Problem problem) {
         TicTacToe p = (TicTacToe)problem;
-        p.tree.append("X(f[p[");
+        p.tree.append("while (true) {");
         children[0].eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
-        p.tree.append("]].x, f[p[");
-        children[1].eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
-        p.tree.append("]].y)");
+        p.tree.append("}");
     }
 }
-
