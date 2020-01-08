@@ -2,6 +2,7 @@ package com.company.GA;
 
 import com.company.PlayingProcess.GASimulator;
 import com.company.PlayingProcess.Game;
+import com.company.PlayingProcess.Simulator;
 import il.ac.bgu.cs.bp.bpjs.internal.ExecutorServiceMaker;
 import io.jenetics.*;
 import io.jenetics.engine.Engine;
@@ -31,6 +32,7 @@ public class GA_Solver {
     }
 
     public void Solve() {
+        Simulator.playingAgainstRandom = true;
 
         Factory<Genotype<IntegerGene>> gtf = Genotype.of(IntegerChromosome.of(1, 11), SIZE_OF_SOLUTION);
 

@@ -2,8 +2,6 @@ package com.company.PlayingProcess;
 
 import com.company.BPStuff.BProgramExecutorRunner;
 import com.company.BPStuff.MovesBProgramListener;
-import com.company.BPStuff.TicTacToeEvents.Move;
-import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
 import il.ac.bgu.cs.bp.bpjs.model.ResourceBProgram;
@@ -17,17 +15,21 @@ import java.util.stream.IntStream;
  * Simulates games played by an individual.
  */
 public abstract class Simulator {
-    private static final String aResourceName = "BPJSTicTacToe.js";
+    private static final String aRandomResourceName = "BPJSTicTacToeRand.js";
+    private static final String aOptimalResourceName = "BPJSTicTacToeOpt.js";
     private static final int NUM_OF_GAMES = 50;
     private ExecutorService executorService;
-
+    public static boolean playingAgainstRandom = true;
 
     public Simulator(ExecutorService executorService) {
         this.executorService = executorService;
     }
 
     protected BProgram createProgram(){
-        return new ResourceBProgram(aResourceName, new PrioritizedBSyncEventSelectionStrategy());
+        if(playingAgainstRandom)
+            return new ResourceBProgram(aRandomResourceName, new PrioritizedBSyncEventSelectionStrategy());
+        else
+            return new ResourceBProgram(aOptimalResourceName, new PrioritizedBSyncEventSelectionStrategy());
     }
 
     public double getFitness(){

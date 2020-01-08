@@ -1,8 +1,6 @@
 package com.company.GA;
 
 import com.company.BPStuff.MovesBProgramListener;
-import com.company.BPStuff.TicTacToeEvents.Move;
-import com.company.BPStuff.TicTacToeEvents.X;
 import il.ac.bgu.cs.bp.bpjs.execution.BProgramRunner;
 import il.ac.bgu.cs.bp.bpjs.model.BEvent;
 import il.ac.bgu.cs.bp.bpjs.model.BProgram;
@@ -44,12 +42,11 @@ public class Main_GA {
         runSpecificExperiment("exp13",0.4, 3, 0.1);
         runSpecificExperiment("exp14",0.4, 3, 0.01);
         runSpecificExperiment("exp15",0.4, 3, 0.001);
-
         GA_Solver.executorService.shutdown();
     }
 
     public static void runSpecificExperiment(String name, double crossP, int crossN, double mutP){
-        String folder = "src/main/results/GA";
+        String folder = "src/main/results/GA/optX";
         System.out.println("now running experiment: " + name);
         for(int i = 0; i < 3; i++){
             MyStatisticsSaver statisticsSaver = new MyStatisticsSaver(folder, name, i);
@@ -60,7 +57,7 @@ public class Main_GA {
     }
 
     public static void previousRun(){
-        String aResourceName = "BPJSTicTacToe.js";
+        String aResourceName = "BPJSTicTacToeRand.js";
         BProgram program = new ResourceBProgram(aResourceName, new PrioritizedBSyncEventSelectionStrategy());
         Integer[] weightsArray = new Integer[]{50, 40, 30, 30, 30, 30, 30, 35, 20, 10};
         //Integer[] weightsArray = new Integer[]{1,1,1,1,1,1,1,1,1,1};

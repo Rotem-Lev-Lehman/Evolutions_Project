@@ -1,5 +1,6 @@
 package com.company.GA;
 
+import com.company.PlayingProcess.Simulator;
 import io.jenetics.Genotype;
 import io.jenetics.IntegerGene;
 import io.jenetics.Phenotype;
@@ -21,6 +22,7 @@ public class MyStatisticsSaver {
     private static List<Integer[]> bestIndWeights;
     private static int generationNum;
     public static int UPDATE_USER_EVERY_GENERATION_NUM = 5;
+    public static int PLAY_AGAINST_OPTIMAL_AT_GENERATION = 100;
     private static int nextTimeToUpdateUser;
     private String filename;
 
@@ -110,6 +112,10 @@ public class MyStatisticsSaver {
         if(generationNum >= nextTimeToUpdateUser){
             nextTimeToUpdateUser += UPDATE_USER_EVERY_GENERATION_NUM;
             System.out.println("Current generation is: " + generationNum);
+        }
+
+        if(generationNum >= PLAY_AGAINST_OPTIMAL_AT_GENERATION){
+            Simulator.playingAgainstRandom = false;
         }
         generationNum++;
     }
