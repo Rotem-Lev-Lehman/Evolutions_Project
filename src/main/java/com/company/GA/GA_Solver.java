@@ -14,11 +14,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GA_Solver {
-    private static final int SIZE_OF_SOLUTION = 10;
-    private static final int POPULATION_SIZE = 10;
-    private static final long AMOUNT_OF_GENERATIONS = 2;
+    public static final int SIZE_OF_SOLUTION = 10;
+    private static final int POPULATION_SIZE = 50;
+    private static final long AMOUNT_OF_GENERATIONS = 150;
     private static final AtomicInteger INSTANCE_COUNTER = new AtomicInteger();
-    private  static ExecutorService executorService = ExecutorServiceMaker.makeWithName("BProgramRunner-" + INSTANCE_COUNTER.incrementAndGet());
+    public static ExecutorService executorService = ExecutorServiceMaker.makeWithName("BProgramRunner-" + INSTANCE_COUNTER.incrementAndGet());
+
+    private final double crossP;
+    private final int crossN;
+    private final double mutP;
+
+    public GA_Solver(double crossP, int crossN, double mutP) {
+        this.crossP = crossP;
+        this.crossN = crossN;
+        this.mutP = mutP;
+    }
 
     public void Solve() {
 
@@ -26,7 +36,7 @@ public class GA_Solver {
 
         Engine<IntegerGene, Double> engine = Engine.builder(GA_Solver::eval, gtf)
                 .populationSize(POPULATION_SIZE)
-                .alterers(new MultiPointCrossover<>(0.7,3), new Mutator<>(0.1))
+                .alterers(new MultiPointCrossover<>(crossP, crossN), new Mutator<>(mutP))
                 .selector(new TournamentSelector<>())
                 .maximizing()
                 .build();
@@ -35,7 +45,6 @@ public class GA_Solver {
                 .limit(Limits.byFixedGeneration(AMOUNT_OF_GENERATIONS))
                 .peek(MyStatisticsSaver::update)
                 .collect(EvolutionResult.toBestGenotype());
-        executorService.shutdown();
         System.out.println("Fitness = " + eval(result));
         System.out.println(Arrays.toString(getWeights(result)));
 
@@ -48,7 +57,7 @@ public class GA_Solver {
         return simulator.getFitness();
     }
 
-    private static Integer[] getWeights(Genotype<IntegerGene> gt) {
+    public static Integer[] getWeights(Genotype<IntegerGene> gt) {
         Integer[] weights = new Integer[SIZE_OF_SOLUTION];
         for (int i = 0; i < gt.length(); i++) {
             weights[i] = gt.getChromosome(i).stream().mapToInt(IntegerGene::intValue).toArray()[0];

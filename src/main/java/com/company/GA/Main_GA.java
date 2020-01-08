@@ -28,14 +28,35 @@ public class Main_GA {
         //previousRun();
     }
 
-    public static void runGAWithStatistics(){
+    private static void runGAWithStatistics() {
+        runSpecificExperiment("exp4",0.7, 2, 0.1);
+        runSpecificExperiment("exp5",0.7, 2, 0.01);
+        runSpecificExperiment("exp6",0.7, 2, 0.001);
+
+        runSpecificExperiment("exp7",0.4, 2, 0.1);
+        runSpecificExperiment("exp8",0.4, 2, 0.01);
+        runSpecificExperiment("exp9",0.4, 2, 0.001);
+
+        runSpecificExperiment("exp10",0.7, 3, 0.1);
+        runSpecificExperiment("exp11",0.7, 3, 0.01);
+        runSpecificExperiment("exp12",0.7, 3, 0.001);
+
+        runSpecificExperiment("exp13",0.4, 3, 0.1);
+        runSpecificExperiment("exp14",0.4, 3, 0.01);
+        runSpecificExperiment("exp15",0.4, 3, 0.001);
+
+        GA_Solver.executorService.shutdown();
+    }
+
+    public static void runSpecificExperiment(String name, double crossP, int crossN, double mutP){
         String folder = "src/main/results/GA";
-        String name = "exp1";
-        int experimentNum = 1;
-        MyStatisticsSaver statisticsSaver = new MyStatisticsSaver(folder, name, experimentNum);
-        GA_Solver solver = new GA_Solver();
-        solver.Solve();
-        statisticsSaver.Save();
+        System.out.println("now running experiment: " + name);
+        for(int i = 0; i < 3; i++){
+            MyStatisticsSaver statisticsSaver = new MyStatisticsSaver(folder, name, i);
+            GA_Solver solver = new GA_Solver(crossP, crossN, mutP);
+            solver.Solve();
+            statisticsSaver.Save(crossP, crossN, mutP);
+        }
     }
 
     public static void previousRun(){
@@ -43,7 +64,9 @@ public class Main_GA {
         BProgram program = new ResourceBProgram(aResourceName, new PrioritizedBSyncEventSelectionStrategy());
         Integer[] weightsArray = new Integer[]{50, 40, 30, 30, 30, 30, 30, 35, 20, 10};
         //Integer[] weightsArray = new Integer[]{1,1,1,1,1,1,1,1,1,1};
-
+                                            //[11, 10, 4, 8, 8, 2, 10, 11, 5, 2]
+                                            //[11, 5, 6, 2, 1, 2, 5, 6, 4, 3]
+                                            //[11, 9, 3, 2, 5, 1, 10, 10, 3, 1]
         program.putInGlobalScope("weights", weightsArray);
         BProgramRunner runner = new BProgramRunner(program);
         MovesBProgramListener listener = new MovesBProgramListener();

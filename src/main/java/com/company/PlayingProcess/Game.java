@@ -110,7 +110,7 @@ public class Game {
         else if(result == GameResult.XWin)
             return 0;
         else
-            return 0.3;
+            return 0.1;
     }
 
     public GameResult getResult() {
