@@ -10,11 +10,11 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.InetSocketAddress;
 
-public class Server implements HttpHandler {
+public class ServerForSingleIndividual implements HttpHandler {
 
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-        server.createContext("/TicTacToe", new Server());
+        server.createContext("/TicTacToe", new ServerForSingleIndividual());
         server.setExecutor(GA_Solver.executorService); // creates a default executor
         server.start();
     }
