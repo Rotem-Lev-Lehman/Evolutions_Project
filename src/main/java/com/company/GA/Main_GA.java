@@ -57,7 +57,7 @@ public class Main_GA {
     }
 
     public static void previousRun(){
-        String aResourceName = "BPJSTicTacToeRand.js";
+        String aResourceName = "GA/BPJSTicTacToeRand.js";
         BProgram program = new ResourceBProgram(aResourceName, new PrioritizedBSyncEventSelectionStrategy());
         Integer[] weightsArray = new Integer[]{50, 40, 30, 30, 30, 30, 30, 35, 20, 10};
         //Integer[] weightsArray = new Integer[]{1,1,1,1,1,1,1,1,1,1};

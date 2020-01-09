@@ -13,6 +13,11 @@ public class GASimulator extends Simulator {
     }
 
     @Override
+    protected String getFolderForJSSources() {
+        return "GA/";
+    }
+
+    @Override
     protected BProgram createProgram() {
         BProgram program = super.createProgram();
         program.putInGlobalScope("weights", weights);

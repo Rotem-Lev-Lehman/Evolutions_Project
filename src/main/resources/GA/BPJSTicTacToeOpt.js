@@ -230,7 +230,6 @@ function addFork22PermutationBthreads(f, p) {
 			bp.sync({ waitFor:[ X(f[p[1]].x, f[p[1]].y) ] });
 
 			bp.sync({ request:[ O(2, 2), O(0,2), O(2,0) ] }, weights[2]);
-//			bp.sync({ block:[ O(0,0), O(0,1), O(1,0) ] },30); // Problematic - stays all the time
 		}
 	});
 }

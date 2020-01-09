@@ -15,11 +15,13 @@ import java.util.stream.IntStream;
  * Simulates games played by an individual.
  */
 public abstract class Simulator {
-    private static final String aRandomResourceName = "BPJSTicTacToeRand.js";
-    private static final String aOptimalResourceName = "BPJSTicTacToeOpt.js";
+    protected static final String aRandomResourceName = "BPJSTicTacToeRand.js";
+    protected static final String aOptimalResourceName = "BPJSTicTacToeOpt.js";
     private static final int NUM_OF_GAMES = 50;
     private ExecutorService executorService;
     public static boolean playingAgainstRandom = true;
+
+    protected abstract String getFolderForJSSources();
 
     public Simulator(ExecutorService executorService) {
         this.executorService = executorService;
@@ -27,9 +29,9 @@ public abstract class Simulator {
 
     protected BProgram createProgram(){
         if(playingAgainstRandom)
-            return new ResourceBProgram(aRandomResourceName, new PrioritizedBSyncEventSelectionStrategy());
+            return new ResourceBProgram(getFolderForJSSources() + aRandomResourceName, new PrioritizedBSyncEventSelectionStrategy());
         else
-            return new ResourceBProgram(aOptimalResourceName, new PrioritizedBSyncEventSelectionStrategy());
+            return new ResourceBProgram(getFolderForJSSources() + aOptimalResourceName, new PrioritizedBSyncEventSelectionStrategy());
     }
 
     public double getFitness(){
