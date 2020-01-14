@@ -11,10 +11,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="ecj.23" level="project" />
     <orderEntry type="library" name="Maven: io.jenetics:jenetics:5.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.github.bthink-bgu:BPjs:0.10.3" level="project" />
     <orderEntry type="library" name="Maven: org.mozilla:rhino:1.7.9" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20190722" level="project" />
+    <orderEntry type="library" name="ecj.23" level="project" />
   </component>
 </module>
